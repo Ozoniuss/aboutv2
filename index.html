@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/main.css" type="text/css" />
+  <link rel="stylesheet" href="styles/profile.css" type="text/css" />
+  <link rel="stylesheet" href="styles/header.css" type="text/css" />
+  <link rel="stylesheet" href="styles/top.css" type="text/css" />
+  <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+  <title>Ozoniuss</title>
+</head>
+
+<body>
+  <div class="top">
+    <nav-menu current="home" path="."></nav-menu>
+  </div>
+  <section class="profile-section is-center">
+    <img src="assets/mothman_cut.png" alt="" class="profile-pic" />
+    <div class="profile-data">
+      <div class="name">Alex Bledea (ozoniuss)</div>
+      <div class="align-center">
+        <div class="position">Software Engineer</div>
+        <i class="fa-solid fa-circle"></i>
+        <div class="location">Cluj-Napoca, Romania</div>
+      </div>
+      <div class="links space-around">
+        <div class="card github" onclick="openLink(`https://github.com/Ozoniuss`)">
+          <i class="fa-brands fa-github"></i>
+          <div class="media">GitHub</div>
+        </div>
+        <div class="card linkedin" onclick="openLink(`https://www.linkedin.com/in/alex-bledea-a8865b1a0/`)">
+          <i class="fa-brands fa-linkedin"></i>
+          <div class="media">LinkedIn</div>
+        </div>
+        <div class="card medium" onclick="openLink(`https://medium.com/@ozoniuss`)">
+          <i class="fa-brands fa-medium"></i>
+          <div class="media">Medium</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+<script src="scripts/script.js"></script>
+<script src="scripts/components.js"></script>
+
+</html>

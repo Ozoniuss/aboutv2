@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/code.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>it's pretty easy if you know what to do</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>Splitting a big repository into smaller ones</h2>
+
+        <p>
+            Let me give you a quick teaser to think about before reading this article: imagine you have a huge monorepo, where you keep two different projects that don't have anything in common (e.g. no commit changed files in both projects). You want to create two different repos for each of the two projects, whilist transfering all commits that contributed to each individual project in their new repo. How do you approach this? (SPOILER: that's what this article is about)
+        </p>
+
+        <p>
+            I have a big <a href="http://" target="_blank" rel="noopener noreferrer">Algorithms</a> repository where I keep solutions for a bunch of coding problems. While this was fine for the beginning, the more problems I added, the less this monolith structure made sense. For example, I have a Leetcode folder and an Advent of Code folder, which not only contain solutions but also various helpers for their specific type of problems. At least those two folders I wanted to be separate repos, to have the problems and helpers live independently.
+        </p>
+
+        <p>
+            However, I also wanted to keep their commit history, and not just make in each of the new repos a huge commit titled "add all existing problems" or some shit. So I knew right away I was in for some heavy git rebase work. Luckily, the Leetcode commits have nothing to do with the Advent of Code ones, so at list there was no need to break any existing commits.
+        </p>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>

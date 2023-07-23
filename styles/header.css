@@ -1,0 +1,33 @@
+nav-menu {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    z-index: 1000;
+}
+
+.tab {
+    margin: 5px 10px;
+    padding: 2px;
+    font-weight: 450;
+    font-size: 18px;
+    text-shadow: 4px -1px 19px rgba(248, 245, 245, 0.47);
+    text-decoration: none;
+    color: black;
+    white-space: nowrap;
+}
+
+.tab:hover {
+    cursor: pointer;
+    color: #313e6d;
+}
+
+.tab.is-active {
+    border-bottom: 2px solid #313e6d;
+}
+
+
+@media only screen and (max-width : 768px) {
+    nav-menu {
+        position: relative;
+    }
+}

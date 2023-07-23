@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/code.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>I should probably chill</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>Solving advent of code problem 11 from 2015 without running code</h2>
+
+        <p>
+            I probably wouldn't be writing this article if it weren't past 2 a.m. and I weren't past half drunk. But I think it's a <a href="https://adventofcode.com/2015/day/11" target="_blank" rel="noopener noreferrer">nice problem</a> that shows sometimes you gotta work smarter, not harder. So let's take a look.
+        </p>
+
+        <p>
+            You have to implement three checks in total:
+            <ul>
+                <li>
+                    Checking that a string doesn't have letters "i", "l" and "o"
+                </li>
+                <li>
+                    Checking that a string has a substring of at least 3 consecutive strings (e.g. "abc", "xyz")
+                </li>
+                <li>
+                    Checking that there's at least two different, non-overlapping pairs of letters (e.g. "aabb", "aaaa", "aaxbb" but not "aaax")
+                </li>
+            </ul>
+        </p>
+
+        <p>
+            You start with a string, and keep advancing strings (for example from "abc" to "abd" or "xyz" to "xza") until you find one that checks all boxes. Knowing in the back of my head that this is a programming problem, I stared implementing the checks and the algorithm that advances a string. First two checks were trivial, I wrote them even without thinking what I'd do. Last one wasn't exactly trivial but still easy and took me less than 5 minutes.
+        </p>
+
+        <p>
+            I also did what I thought was a nice pattern, by defining a function which takes a string and a variadic argument representing a number of functions that take in a string and return a boolean. This is generalized and allows you to test a bunch of conditions on your input string, and return whether or not all conditions apply:  <code class="gocode">
+func checkCriteria(pass string, criteria ...func(string) bool) bool {
+    ret := true
+    for _, c := range criteria {
+        ret = ret && c(pass)
+    }
+    return ret
+}
+        </code>
+        </p>
+
+        <p>
+            The advancing algorithm is also pretty easy and I eventually got the answer to part (a). Find my full code <a href="https://github.com/Ozoniuss/Algorithms/blob/master/advent-of-code-2015/11-corporate-policy/main.go" target="_blank" rel="noopener noreferrer">here</a>. Part (b) is pretty simple, you just plug in the answer from part (a) to get your answer. But just before doing that I stopped and was like "Wait a minute. Why the fuck did I waste all this time when I could probably just figure out the answer myself through some simple math?"
+        </p>
+
+        <p>
+            This turned out to be very true. Let's take my latest input: "hxbxxyzz". Let's think this through:
+            <ul>
+                <li>
+                    A good bunch of next strings will look like "hxbx----". Note that in the last 5 characters, we need both 3 consecutive letters, as well as two different pairs. And the only way to do it would be "hxbxxyzz". That is because within the consecutive triplet there is no pair, and adding two pairs to a triplet requires at least two more letters: for exactly two letter, add one to the left of the triplet and one to the right (e.g. mmnpp).
+                </li>
+                <li>
+                    With that in mind, let's prove that after "hxbxxyzz" we can't advance the last 5 letters only to get a new valid password. The first 3 letters, "hxb" aren't of any good since the fourth is "x" or after, which means we can't combo with "b".
+                </li>
+                <li>
+                    So, let's look at the last 5 letters only. The format can't be "abc--" or "--abc" because that won't give us two pairs (remember we can't use the first 3 letters for combos). So we need something of the format "-abc-", which means we also know the first and last letter automatically.
+                </li>
+                <li>
+                    It's very easy to see from here that there is nothing after "xxyzz".
+                </li>
+            </ul>
+        </p>
+
+        <p>
+            In this problem, thinking smarter and not jumping directly to writing code would have probably been much faster therefore. And that stays true for part (a), where I got input "hxbxwxba". Through similar reasoning you can deduce that the first "b" can't be used in combos and you're looking for the last 5 letters to have a sequence and two pairs, and succeed "xwxba". It's easy to notice "xxyzz" is the only one, given the previous arguments.
+        </p>
+
+        <p>
+            That finishes my story. I probably explained like shit, normally I'd proofread and rephrase but it's 3 a.m. soon and I'm starting to have a fucking headache.
+        </p>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>why?</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>Why is my personal page the way that it is?</h2>
+
+        <p>
+            My website is very simple: html, css, javascript and media files being served from the standard Go web server, running on an old laptop in my room. No complicated backend server where I spent 80% percent of the time just to define the interaction with API up to big standards,
+            and no fancy frontend framework in which I wouldn't have had the slightest clue of what I was doing. Just plain old static files, similar to what the most basic Apache web
+            server does. And I like it this way. I have no intention of switching to something else, at
+            least not for now. If you think about it, that's what most of these modern web frameworks fundamentally do
+            under the hood anyway, right? Convert your code to some html, css and javascript bundle, and send them to
+            the browsers. I decided to cut out the middleman and send what the browsers want directly.
+        </p>
+
+        <p>
+            This very simplistic setup reminds me of the old internet days. I don't know how it was to program back
+            then, but I can certainly understand how it feels to be overwhelmed by all these new technologies, when
+            trying to learn how to program now. In a way, very simple web servers like this one that return html files mark the start
+            of the web as we know it today, and taking this journey to write my blog like this will give me a better
+            understanding of why technologies evolved the way they did. If I will feel the need to move to something
+            more advanced, I will understand why, and it will be gradual.
+        </p>
+
+        <p>
+            I definitely felt into the trap of starting to learn a complex framework without knowing the fundamentals. Let's just say I didn't have an easy time debugging the obscure stuff, and I felt I will never be able to understand those technologies enough to be a good programmer. And on top of that, there's a really cool retro vibe that comes with the "plain html" type of look. I think <a href="https://adventofcode.com/">Advent of Code</a> is a very good example of this 2000s, minimalistic look.
+        </p>
+
+        <p>
+            Besides, I'm not really a frontend guy. I don't dislike frontend, and I'm not against learning frontend
+            technologies or frameworks. In fact, the first "serious" technology I learned when I tried to get my first
+            junior job was React (which I didn't get, thank god). I mean, I don't even write my own css here (shoutout to my girlfriend).
+        </p>
+
+        <p>
+            However, I did cheat on the deployment side and took a more modern approach deploying this thing to make it available over the internet. Currently, this is running in a docker compose project and is sitting behind Traefik. And even though it was supposed to be much simpler than the old-school way, putting this behind a proxy and enabling TLS was a fucking pain in the ass.
+        </p>
+
+        <p>
+            This is pretty much all there is to it. Of course, there were things I thought about, like scalability, infrastructure, making it more comfortable for me to write text, security, backups etc etc. I know about them. But at the moment, this is good enough. When the time comes, I'll probably make the switch to cloud providers and maybe technologies that were designed with this website's purpose in mind. But I will still try to keep this old-school touch.
+        </p>
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>

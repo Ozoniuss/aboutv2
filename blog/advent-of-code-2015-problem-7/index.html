@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/code.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>but I figured it out anyway</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>Problem 7 from AoC 2015 has an interesting catch</h2>
+
+        <p>
+            Today I decided to resume my Advent of Code journey and get some practice before the contest starts in December. So I continued with the 2015 problems, starting with <a href="https://adventofcode.com/2015/day/7" target="_blank" rel="noopener noreferrer">problem 7.</a> I spent a while to understand what the fuck it wanted from me, but once I figured it out it seemed pretty easy. A few patterns of sending signals to wires and tracking down the signals. Piece of cake; it's just a bit of work to parse the input. See my full solution <a href="https://github.com/Ozoniuss/Algorithms/tree/master/advent-of-code-2015/07-some-assembly-required" target="_blank" rel="noopener noreferrer">here.</a>
+        </p>
+
+        <p>
+            There's just one gotcha, though. You can't really see it from the first example, because in the order they were written, all wires received some sort of input before they sent the signal to some other wires or gates. But for example if you had the input below (which is valid), it's no longer straightforward:
+        <code class="blockcode">
+x AND y -> d
+x OR y -> e
+x LSHIFT 2 -> f
+y RSHIFT 2 -> g
+NOT x -> h
+NOT y -> i
+123 -> x
+456 -> y
+        </code>
+        </p>
+
+        <p>
+            This is still valid, but if your approach was computing each operation line by line, you won't be able to do shit when you parse the first few lines, because you don't know the signals of x and y. And at first I was like, "ok let's just go through all of them, do the operations we can, go through all of them again, do what we can again based on the signals we computed and so on". Basically on the first parse you'd compute x and y, and then you will find all of them in the second pass. Easy.
+        </p>
+
+        <p>
+            But there's the gotcha: why would this even work? Would the order in which you parse the operations (which is not deterministic if you store them in a map, at least in Go) affect the outcome? Will you ever complete all operations? The mathematician in me did not want to write this solution until I'd figured it's deterministic, regardless of the parsing order.
+        </p>
+
+        <p>
+            But there is a key sentence in the statement that gives it away: "Each wire can only get a signal from one source, but can provide its signal to multiple destinations." Since the source of a wire is always unique, its input signal will be computed only once, and the signal it sends away is again, sent only once. This means that the moment this happens doesn't really matter, and as long as you get to compute it (which I guess is ensured by the problem's input), you will have an output.
+        </p>
+
+        <p>
+            I don't know why I realised faster that this is essentially simulating the behaviour of a real <a href="https://www.allaboutcircuits.com/uploads/articles/semiconductor-gate-circuit.jpg" target="_blank" rel="noopener noreferrer">circuit</a> with wires and gates. But once you think of it that way, you realise that the problem input is just a description with text of such a circuit.
+        </p>
+
+        <p>
+            One short comment on part two: I have no idea what Eric was thinking when he phrased it that way. It took me way longer than it should have to figure out what the hell he wanted me to compute. I'm certain there were easier ways to say "replace the value from b in your input with the value you found at part 1".
+        </p>
+
+        <p>
+            But anyway, this was a really nice one, I enjoyed it.
+        </p>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>

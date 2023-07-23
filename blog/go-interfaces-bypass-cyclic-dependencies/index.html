@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/code.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>bypass dependencies</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>Go interfaces bypass cyclic dependencies</h2>
+
+        <p>
+            Yes, that's right. I figured it out while reading Teiva Harsanyi's book <a
+                href="https://www.manning.com/books/100-go-mistakes-and-how-to-avoid-them">100 Go Mistakes and How to
+                Avoid them.</a> And this is due to interfaces being satisfied implicitly, unlike languages like Java
+            where they have to be declared explicitly with the implements keyword. But what does this even mean, and why
+            would it be useful?
+        </p>
+
+        <p>
+            I'll illustrate what this means through a simple dumb example. Say we have some client that prints hello
+            to its users when registering. So you would have a function like:
+            <code class="gocode">
+func PrintHello(){ 
+    fmt.Println("hello client")
+}
+            </code>
+            However maybe to some clients you want to print the message in a different format, perhaps colored or with
+            different text styling. In the client code you could define the following interface:
+            <code class="gocode">
+type helloPrinter interface {
+    PrintHello()
+}
+            </code>
+            Now you can implement the <code>PrintHello()</code> function in various ways. But let's assume you want to
+            use the implementation of some existing package, for example, a fictional <code>color</code> package. Assume
+            that the color package provides structs such as <code>GreenPrinter</code> and <code>YellowPrinter</code>
+            where each define the method <code>PrintHello()</code>. Since interfaces are implemented implicitly in Go,
+            it means that you could simply import these structs in your client code and use them as a
+            <code>helloPrinter</code> to define some funtions:
+            <code class="gocode">
+func Print(h helloPrinter) {
+    h.PrintHello()
+}
+
+func PrintHelloRed() {
+    p := color.GreenPrinter{}
+    p.PrintHello()
+}
+
+func PrintHelloYello() {
+    p := color.YellowPrinter{}
+    p.PrintHello()
+}
+            </code>
+        </p>
+        <p>
+            But, where is the dependency cycle? Well, your <code>client</code> package needs the
+            <code>YellowPrinter</code> and the <code>GreenPrinter</code> structs from the <code>color</code> package.
+            But at the same time, if you had to explicitly implement the interface such as in Java, the
+            <code>color</code> package would have had to import the <code>helloPrinter</code> interface from the client
+            package, thus creating a dependency cicle. The implicit implementation avoided this dependency cicle, while
+            also putting fuel on my irrational hate I have for Java (seriously, what's going on with that language...)
+        </p>
+
+        <p>
+            Note that, I'm pretty sure there must be a way to do something similar in other languages, but nothing came
+            to mind when I wrote this.
+        </p>
+
+        <p>
+            At the same time, one more benefit is that the client can implement its own printers, in addition to using
+            existing ones. See the <a
+                href="https://github.com/Ozoniuss/blog-examples/tree/main/go-interfaces-bypass-cyclic-dependencies/hello-printer-go">full
+                working example</a> on my github. It includes a <code>ReversePrinter</code> implementation of
+            <code>HelloPrinter</code>.
+        </p>
+
+        <p>
+            Of course, the example above is out of thin air and while it serves as a proof-of-concept, it's not
+            indicative of any actual real-world example. I personally wrote this more of as an interesting fact, but
+            this approach can lead to some nice design possibilities.
+        </p>
+
+        <p>
+            The book I linked above discusses best practices of locating the definition of an interface in a project.
+            Particularly, this approach makes it possible to introudce an interface definition in the client code, whose
+            implementation may in fact be found in existing go packages. This is outside the scope of this post, as I
+            just wanted to show the mechanism, but I definitely recommend reading the book.
+        </p>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>
