@@ -1,0 +1,35 @@
+name: Go package
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    sync-to-s3:
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Install rclone
+              run: |
+              pwd
+              curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
+              unzip rclone-current-linux-amd64.zip
+              cd rclone-*-linux-amd64
+              
+              sudo cp rclone /usr/bin/
+              sudo chown root:root /usr/bin/rclone
+              sudo chmod 755 /usr/bin/rclone
+
+    # sync-to-b3:
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: actions/checkout@v3
+
+    #         - name: Set up Go
+    #           uses: actions/setup-go@v4
+    #           with:
+    #               go-version: '1.21'
+
+    #         - name: Run end to end tests
+    #           working-directory: .
+    #           run: bash test_e2e.sh
