@@ -51,6 +51,9 @@ class NavMenu extends HTMLElement {
     <a href="${path}/about/index.html" class="tab ${
 			current === 'about' ? 'is-active' : ''
 		}">About me</a>
+    <a href="${path}/work/index.html" class="tab ${
+			current === 'work' ? 'is-active' : ''
+		}">My work</a>
     <a href=${path}/guitar/index.html class="tab ${
 			current === 'guitar' ? 'is-active' : ''
 		}">Guitar</a>
