@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>why?</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>What encoding should I use?</h2>
+
+        <p>
+            This is not going to be a dive into how different encodings work (well, maybe a bit, just to illustrate certains aspects). I just finished reading the chapter "Encoding and Evolution" from the famous "Designing Data-Intensive Applications" book, and I wanted to write up a short summary of what I feel like I learned. And curiously, it's not necessarily about encodings in general.
+        </p>
+
+        <p>
+            key ideas:
+
+            - easy to change
+            - the flavours are at storage level and at application level
+            - schemas are useful for reducing storage toll, but make it harder to preserve forwards or backwards compatibility
+            - there are different flavours of backwards compatibility
+            - code generation in dyanmically typed languages
+            - whether a rolling update is possible depends on backwards compatibility AND forwards compatibility AND some intermediary compatibility (new, w) -> (old, r) -> (old,w)
+            - data outlives code
+        </p>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>
