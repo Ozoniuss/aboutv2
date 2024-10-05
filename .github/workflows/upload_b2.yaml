@@ -1,25 +1,25 @@
-name: Go package
+name: Backblaze B2 Sync
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - fake
 
 jobs:
-    sync-to-s3:
-        runs-on: ubuntu-22.04
-        steps:
-            - name: Install rclone
-              run: |
-                  pwd
-                  curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip
-                  unzip rclone-current-linux-amd64.zip
-                  cd rclone-*-linux-amd64
+  backblaze-cli-debug:
+    runs-on: ubuntu-latest
 
-                  sudo cp rclone /usr/bin/
-                  sudo chown root:root /usr/bin/rclone
-                  sudo chmod 755 /usr/bin/rclone
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-                  echo "hello"
+      - name: Install b2 CLI tool
+        run: |
+          pip install b2 --log /dev/null
 
-                  rclone listremotes
+      - name: List files in Backblaze B2 bucket
+        run: |
+          b2 ls "b2://ozoniusswebsite/"
+        env:
+          B2_APPLICATION_KEY_ID: ${{ secrets.B2_APPLICATION_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
