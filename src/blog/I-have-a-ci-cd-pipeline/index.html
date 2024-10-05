@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/code.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>This page was powered by pipeline</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>I finally have a Github CI/CD pipeline to update my site automatically</h2>
+
+        <p>
+            I was planning to do this for quite some time now. In fact, I've had an open issue for this <a href="https://github.com/Ozoniuss/aboutv2/issues/1" target="_blank" rel="noopener noreferrer">for the last 6 months.</a> I really slacked on the website lately, mainly because I was going through some issues at work, and have tried experimenting with Github pages as an alternative. But I finally found another use case that would be perfect for the website, which prompted me to finally get the CI/CD pipeline done with.
+        </p>
+
+        <p>
+            The idea is simple: my site is a static website in Backblaze B2 powered by Cloudflare (I'll explain in some post how I did it). Any changes to the bucket would eventually be reflected on the published website. So the idea is pretty simple: keep the bucket synced with the Github repository. This comes for granted with solutions like Github pages, but when I first did the website I had an unhealthy desire to do everything from scratch, so I have to implement simple things like this by myself. But hey, at least I practice my yaml skills.
+        </p>
+
+        <p>
+            I originally wanted to do this with rclone, mainly because I have experience with it. That's how I've been syncing my website manually so far. But, rclone requires a config file to read the remotes you have access to, and I've configured several remotes. I know you can store secrets in Github, but I didn't want my whole config to be there, just in case. I wasn't able to find an easy way to configure rclone to be able to interact only with a single remote (such as maybe setting some env vars for the commands, idk) so I looked for an alternative. Luckily, Backblaze does have a <a href="https://www.backblaze.com/docs/cloud-storage-command-line-tools" target="_blank" rel="noopener noreferrer">CLI tool</a> which allows you to sync your files easily, whilst also configuring authorization for a single bucket. This is what I went with.
+        </p>
+
+        <p>
+            The script is pretty simple and runs whenever I make a new commit. You can find it below.
+            <code class="blockcode">
+name: Backblaze B2 Sync
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  backblaze-cli-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install b2 CLI tool
+        run: |
+          pip install b2 --log /dev/null
+
+      - name: Sync all files that have a different size
+        run: |
+          b2 sync --compare-versions size --delete ./src/ "b2://ozoniusswebsite/"
+
+        env:
+          B2_APPLICATION_KEY_ID: ${{ secrets.B2_APPLICATION_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+            </code>Honeslty probably the real reason for which I've made this post is to test that the site is updated with this new page.
+        </p>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>
