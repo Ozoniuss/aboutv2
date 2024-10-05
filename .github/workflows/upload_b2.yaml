@@ -19,7 +19,7 @@ jobs:
 
       - name: List files in Backblaze B2 bucket
         run: |
-          b2 sync --dry-run ./src/ "b2://ozoniusswebsite/"
+          b2 sync --dry-run --compare-versions size --delete ./src/ "b2://ozoniusswebsite/"
 
         env:
           B2_APPLICATION_KEY_ID: ${{ secrets.B2_APPLICATION_KEY_ID }}
