@@ -60,6 +60,9 @@ class NavMenu extends HTMLElement {
     <a href=${path}/blog/index.html class="tab ${
 			current === 'blog' ? 'is-active' : ''
 		}">Blog</a>
+    <a href=${path}/must-read/index.html class="tab ${
+			current === 'must-read' ? 'is-active' : ''
+		}">Must Read</a>
     <a href="${path}/resume-downtime/index.html" target="_blank" class="tab">Resume</a>
 </div>
 `;
