@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  backblaze-cli-debug:
+  backblaze-cli-sync:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +17,7 @@ jobs:
         run: |
           pip install b2 --log /dev/null
 
-      - name: List files in Backblaze B2 bucket
+      - name: Sync all files that have a different size
         run: |
           b2 sync --compare-versions size --delete ./src/ "b2://ozoniusswebsite/"
 
