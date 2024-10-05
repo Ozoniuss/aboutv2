@@ -50,7 +50,7 @@ ADD COLUMN exponent INTEGER;
 ALTER TABLE entries
 ADD COLUMN currency TEXT COLLATE NOCASE;
 
--- all my entries were in RON, with exponent 2. 
+-- all my entries were in RON, with exponent 2.
 -- but note that's not necessarily a default value
 ALTER TABLE entries
 SET exponent = -2
