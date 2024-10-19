@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/code.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>It is a pain in the ass</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>Configuring ArgoCD for my Rasperry Pi cluster</h2>
+
+        <p>
+            I have a Raspberry Pi cluster. It's pretty cool. You can read more about it <a href="https://medium.com/@ozoniuss/docker-registry-for-home-kubernetes-cluster-f615a53ee4d6" target="_blank" rel="noopener noreferrer">here</a> if you want.
+        </p>
+
+        <p>
+            One thing I wanted to try with this cluster is to configure ArgoCD for it. Not because I <em>need</em> it or anything like that. But it would be easier to manage, and a good opportunity to get some hands-on Kubernetes experience. I've been doing a lot of Kubernetes at work lately and I kinda started to like it. Hope I'm not turning into a Helm/yaml developer after I've been trying to master Go for so long.
+        </p>
+
+        <p>
+            Anyways, let's get into it. But before we do, something to know: I have a k3s cluster, which is a bit different than a regular Kubernetes cluster. And one thing I didn't manage to get right is being able to run kubeclt without having to add sudo every fucking time. I mean, I know I read somewhere in the documentation how to fix this, but it requires restarting the whole cluster and honestly I've been lazy. You can't just restart a Kubernetes cluster (although I probably could mine) and having multiple namespaces gives me more anxiety than my meds can handle. T
+        </p>
+
+        <p>
+            So, let's go straight to the ArgoCD <a href="https://argo-cd.readthedocs.io/en/stable/getting_started/" target="_blank" rel="noopener noreferrer">tutorial</a> and follow each step. Should be pretty easy. I'm starting with a positive mindset and am relatively hopeful that this will go smoothly.
+        </p>
+
+        <p>
+            However, I haven't even finished reading through the requirements and I see "Have a kubeconfig file (default location is ~/.kube/config)." as one of them. If you run k3s, this is almost enough to trigger a panic attack. My kube config is in some weird ass rancher folder, and definitely not in my home one. Well, I thought "fortune favours the bold" and went with it anyway. What could go wrong?
+        </p>
+
+        <p>
+            Once the namespace was created, I played a bit around with it to see what's in there. Cool, I guess ArgoCD is running now. There were a few notes about certificates which, like anyone developing for locally accessible things, I decided to skip until I reached this note: <em><blockquote>
+                Default namespace for kubectl config must be set to argocd. This is only needed for the following commands since the previous commands have -n argocd already: kubectl config set-context --current --namespace=argocd
+            </blockquote></em>
+        </p>
+
+        <p>
+            I mean, I don't want my kubectl commands to always use the argocd namespace, right? I have shit I want to deploy. So fuck that I said, and I skipped configuring it. Adding the namespace label should be enough, right? right?? (argocd cli laughs in the distance)
+        </p>
+
+        <p>
+            I wanted to test it by following step 3. Now, I don't know much about service types in Kubernetes (yet!) but I sure as hell know how to port forward. But, remember I'm on a headless Raspberry Pi here. Port forwarding ain't enough unfortunately. That's where SSH tunnels save the day. I port forwarded the argocd service, then with an SSH tunnel I was able to eventually see the ArgoCD UI I love opening at work every day (fuck you SSO). Here are the commands you can use to achieve this: <code class="blockcode">
+# badass cowboy needs sudo and -n because of dumb life principles
+sudo kubectl port-forward svc/argocd-server -n argocd 8080:443
+# I have aliases and shit in my /etc/hosts
+ssh -L 8080:127.0.0.1:8080 my_user@my_pc
+            </code>
+        </p>
+
+        <p>
+            A tip for you: learn how to use tmux. You will thank me later. And, I started to like chatgpt: I don't have to remember all these commands. Of course, and I shouldn't need to mention: <em>I know what they do.</em> The commands and the flags, and also how to find out more if I need to. Please don't use chatgpt brainlessly. At least not if you end up in the same team with me.
+        </p>
+
+        <p>
+            Installing the <code>argocd</code> binary wasn't that hard. Like a good Linux user, I fetched the ARM binary, put it in my <code>/opt/argocd/bin</code> folder, modified my <code>.bashrc</code> and I was good to go. Until I actually ran the thing. <code class="blockcode">
+FATA[0000] invalid configuration: no configuration has been provided,
+try setting KUBERNETES_MASTER environment variable
+            </code>
+        </p>
+
+        <p>
+            Just what the hell is this <code>KUBERNETES_MASTER</code> environment variable? Still not sure about the answer, but the fix came from this <a href="https://stackoverflow.com/questions/61903086/error-no-configuration-has-been-provided-try-setting-kubernetes-master-environ" target="_blank" rel="noopener noreferrer">thread</a> on stackoverflow. Of course it was a k3s thing. Let's try it again: <code class="blockcode">
+FATA[0000] error loading config file "/etc/rancher/k3s/k3s.yaml":
+open /etc/rancher/k3s/k3s.yaml: permission denied
+            </code>
+        </p>
+
+        <p>
+            Of course. Remember, I'm a badass cowboy that didn't bother to set up the cluster to run without sudo. So let's add sudo now. <code class="blockcode">
+sudo: argocd: command not found
+            </code>
+        </p>
+
+        <p>
+            At this point my optimism was slightly shifting towards anger. But, still in a good mood, I managed to remember that this could be related to the linux filesystem, where various directories have different meanings. As expected, this problem had a lot to do with the location where I have placed the binary. I believe the exact answer I followed is <a href="https://askubuntu.com/questions/65728/where-to-install-software-and-executables-for-all-users" target="_blank" rel="noopener noreferrer">this one</a>, but I remember reading more about it. The symlink did the trick, once I had all my paths in .bashrc.
+        </p>
+
+        <p>
+            Yes! It's finally working! Or, so I thought. For some reason, the previous stackoverflow solution of setting the <code>KUBECONFIG</code> environment variable didn't do the trick when I'm calling commands with sudo. Or, maybe sudo isn't the problem and it wouldn't have worked at all. Until I find a fix, my argocd commands literally have to look like this: <code class="blockcode">
+sudo KUBECONFIG=/etc/rancher/k3s/k3s.yaml argocd admin initial-password -n argocd
+            </code>Told you, badass cowboy.
+        </p>
+
+        <p>
+            Now that I have access to the ArgoCD UI, it's time to hook up a github repo to it. Of course, that didn't stop the problems. I kept getting this weird ass error when trying to add a new context to argo: <code class="blockcode">
+rp8@rp8:~$ sudo KUBECONFIG=/etc/rancher/k3s/k3s.yaml argocd cluster add c1
+WARNING: This will create a service account `argocd-manager` on the cluster referenced by context `c1` with full cluster level privileges. Do you want to continue [y/N]? y
+INFO[0001] ServiceAccount "argocd-manager" already exists in namespace "kube-system"
+INFO[0001] ClusterRole "argocd-manager-role" updated
+INFO[0001] ClusterRoleBinding "argocd-manager-role-binding" updated
+FATA[0001] Argo CD server address unspecified
+            </code> I tried various things, such as setting the address to my port forwarded service with no use. I started to think this is related to that stupid problem of having to use sudo. So I gave up my cowboy title and asked chatgpt how to fix my issue. And the answer came back in a sequence of commands: <code class="blockcode">
+sudo chown $(whoami):$(whoami) /etc/rancher/k3s/k3s.yaml
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+            </code>Of course, this made me feel like a dumbass for not trying the suggested approach for so long. Gotta stop fighting against those AIs in an irrational attempt to keep my job. In response to what happened, I will stop calling myself "badass cowboy" and use the nickname "late boomer" instead. And yes, boomer, not "bloomer".
+        </p>
+
+        <p>
+            Well, with my new setup, I did get to a new error: <code class="blockcode">
+p8@rp8:~$ argocd cluster add c1
+WARNING: This will create a service account `argocd-manager` on the cluster referenced by context `c1` with full cluster level privileges. Do you want to continue [y/N]? y
+INFO[0001] ServiceAccount "argocd-manager" already exists in namespace "kube-system"
+INFO[0001] ClusterRole "argocd-manager-role" updated
+INFO[0001] ClusterRoleBinding "argocd-manager-role-binding" updated
+FATA[0001] rpc error: code = Unknown desc = Get "https://127.0.0.1:6443/version?timeout=32s": dial tcp 127.0.0.1:6443: connect: connection refused
+            </code>This smells like some argocd config issue. But, after reading lots of online posts about it with no hope, I was randomly reading through the argocd command line flags. There's one called "--plaintext" which I decided to use because the endpoint in the error had "https" in it. And, it seems to have fixed it?? Sometimes, you just need a little intuition and lots of luck I guess...
+        </p>
+
+        <p>
+            I decided to try to sync the example app and failed, but I believe that's because I set up the namespace name incorrectly (or at least that's what the error displayed). I do get the commit metadata, so I think all's good. For now I'll stop, but quite happy with the result. Have a few ideas how to make this more efficient (I don't want to have 3 running processes all the time, the port forward for the service, one for the UI and argo itself) and will probably move argocd on my main machine.
+        </p>
+
+        <p>
+            There will likely be a part 2. See you then.
+        </p>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>
