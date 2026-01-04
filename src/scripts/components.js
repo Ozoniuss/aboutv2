@@ -48,12 +48,9 @@ class NavMenu extends HTMLElement {
     <a href="${path}/index.html" class="tab ${
 			current === 'home' ? 'is-active' : ''
 		}">Home</a>
-    <a href="${path}/about/index.html" class="tab ${
-			current === 'about' ? 'is-active' : ''
-		}">About me</a>
     <a href="${path}/work/index.html" class="tab ${
 			current === 'work' ? 'is-active' : ''
-		}">My work</a>
+		}">Work with me</a>
     <a href=${path}/guitar/index.html class="tab ${
 			current === 'guitar' ? 'is-active' : ''
 		}">Guitar</a>
@@ -63,7 +60,6 @@ class NavMenu extends HTMLElement {
     <a href=${path}/must-read/index.html class="tab ${
 			current === 'must-read' ? 'is-active' : ''
 		}">Must Read</a>
-    <a href="${path}/resume-downtime/index.html" target="_blank" class="tab">Resume</a>
 </div>
 `;
 	}
