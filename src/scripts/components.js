@@ -41,29 +41,43 @@ class NavMenu extends HTMLElement {
 	}
 
 	connectedCallback() {
-		let current = this.getAttribute('current');
-		let path = this.getAttribute('path') ?? '';
+		const current = this.getAttribute('current');
+		const path = this.getAttribute('path') ?? '';
+
 		this.innerHTML = `
-<div class="header space-around">
-    <a href="${path}/index.html" class="tab ${
-			current === 'home' ? 'is-active' : ''
-		}">Home</a>
-    <a href="${path}/work/index.html" class="tab ${
-			current === 'work' ? 'is-active' : ''
-		}">Work with me</a>
-    <a href=${path}/guitar/index.html class="tab ${
-			current === 'guitar' ? 'is-active' : ''
-		}">Guitar</a>
-    <a href=${path}/blog/index.html class="tab ${
-			current === 'blog' ? 'is-active' : ''
-		}">Blog</a>
-    <a href=${path}/must-read/index.html class="tab ${
-			current === 'must-read' ? 'is-active' : ''
-		}">Must Read</a>
-</div>
+<nav class="nav">
+	<button class="menu-toggle" aria-label="Open menu">
+		<i class="fa fa-bars"></i>
+	</button>
+
+	<div class="menu">
+		<a href="${path}/index.html" class="tab ${current === 'home' ? 'is-active' : ''}">Home</a>
+		<a href="${path}/work/index.html" class="tab ${current === 'work' ? 'is-active' : ''}">Work with me</a>
+		<a href="${path}/guitar/index.html" class="tab ${current === 'guitar' ? 'is-active' : ''}">Guitar</a>
+		<a href="${path}/blog/index.html" class="tab ${current === 'blog' ? 'is-active' : ''}">Blog</a>
+		<a href="${path}/must-read/index.html" class="tab ${current === 'must-read' ? 'is-active' : ''}">Must Read</a>
+	</div>
+</nav>
 `;
+
+    const nav = this;
+		const toggle = this.querySelector('.menu-toggle');
+		const menu = this.querySelector('.menu');
+
+		toggle.addEventListener('click', () => {
+			menu.classList.toggle('open');
+		});
+
+    
+    document.addEventListener('click', (e) => {
+      if (!nav.contains(e.target)) {
+        menu.classList.remove('open');
+      }
+    });
 	}
 }
+// customElements.define('nav-menu', NavMenu);
+
 
 class ModifiedAtItem extends HTMLElement {
 	constructor() {
