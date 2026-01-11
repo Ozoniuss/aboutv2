@@ -18,7 +18,7 @@
     font-size: 16px;
     line-height: 22px;
     opacity: 0.7;
-    text-align: left;
+    text-align: right;
 }
 
 .track-notes {
@@ -26,8 +26,8 @@
     line-height: 30px;
     text-align: justify;
     opacity: 0.9;
-    padding-left: 25px;
-    border-left: 2px solid rgba(92, 114, 128, 0.35);
+    padding-right: 25px;
+    border-right: 2px solid rgba(92, 114, 128, 0.35);
 }
 
 
@@ -36,12 +36,69 @@
 }
 
 .track:nth-child(even) .track-title {
-    text-align: right;
+    text-align: left;
 }
 
 .track:nth-child(even) .track-notes {
-    padding-left: 0px;
-    padding-right: 25px;
-    border-left: none;
-    border-right: 2px solid rgba(92, 114, 128, 0.35);
+    padding-right: 0px;
+    padding-left: 25px;
+    border-right: none;
+    border-left: 2px solid rgba(92, 114, 128, 0.35);
+}
+
+@media (max-width: 768px) {
+    .track {
+        flex-direction: column;
+        row-gap: 12px;
+        margin: 30px 0;
+    }
+
+    .track-audio {
+        align-items: center;
+        margin-top: 15px;
+    }
+
+    .track-title {
+        font-size: 15px;
+        line-height: 20px;
+        text-align: left;
+    }
+
+    .track-notes {
+        font-size: 17px;
+        line-height: 26px;
+
+        padding-left: 0;
+        padding-right: 0;
+        border-left: none;
+        border-right: none;
+
+        padding-bottom: 20px;
+        border-bottom: 2px solid rgba(92, 114, 128, 0.35);
+    }
+
+    .track:nth-child(even) {
+        flex-direction: column;
+        row-gap: 12px;
+        margin: 30px 0;
+    }
+
+    .track:nth-child(even) .track-title {
+        font-size: 15px;
+        line-height: 20px;
+        text-align: left;
+    }
+
+    .track:nth-child(even) .track-notes {
+        font-size: 17px;
+        line-height: 26px;
+
+        padding-left: 0;
+        padding-right: 0;
+        border-left: none;
+        border-right: none;
+
+        padding-bottom: 20px;
+        border-bottom: 2px solid rgba(92, 114, 128, 0.35);
+    }
 }
