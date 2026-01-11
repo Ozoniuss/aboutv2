@@ -81,3 +81,25 @@
 .content sup {
     line-height: 0px;
 }
+
+@media (max-width: 768px) {
+    .content {
+        width: 90vw;
+        margin: 12px;
+        font-size: 17px;
+        line-height: 26px;
+        padding-right: 10px;
+    }
+
+    .content .heading h2 {
+        font-size: 22px;
+    }
+
+    .content .heading h3 {
+        font-size: 19px;
+    }
+
+    .content .heading i {
+        font-size: 28px;
+    }
+}
