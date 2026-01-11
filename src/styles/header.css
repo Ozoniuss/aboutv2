@@ -36,10 +36,12 @@ nav-menu {
 .menu-toggle {
     display: none;
     background: none;
+    appearance: none;
     border: none;
     font-size: 22px;
     cursor: pointer;
     padding: 10px;
+    color: inherit;
 }
 
 @media (max-width: 768px) {
