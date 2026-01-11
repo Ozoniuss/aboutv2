@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/code.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>devops</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>DevOps is not about infra</h2>
+
+        <p>
+            I just finished reading <i>The Phoenix Project</i>, and it felt like the perfect time to share some
+            reflections on DevOps practices — a topic I really enjoy. Honestly, I don't think I've ever encountered
+            another concept where my initial expectations differed so much from reality. I was so impacient to learn
+            more about infrastructure, so you can imagine my surprise when I ended up learning about company politics
+            and people dynamics and barely anything about infrastructure. For a while, I wasn't convinced I was reading
+            the right materials.
+        </p>
+
+        <p>
+            That said, it makes sense — "DevOps" is probably one of the most misused terms in our industry. This is what
+            I want to address in the article. So let me make it clear from the start: <b>DevOps isn't infrastructure
+                work.</b> While it's true that the right tooling and collaboration with infrastructure teams are key
+            parts of it, its practices go so much beyond. But when you see job postings all the time looking for a
+            "DevOps Engineer," no wonder that so many people use it when talking about infra.
+        </p>
+
+        <p>
+            Before I begin, I want to make it clear that this is by no means a comprehensive guide to DevOps. It is not
+            even an overview of the foundations. Rather, I wanted to explain what it means to me, hopefully making it
+            clear with examples. I always found it easy to learn by examples.
+        </p>
+
+        <p>
+            So let's jump straight into the takeaway. My original statement was a hot take, so I've rephrased it into a
+            more precise one:
+        </p>
+
+        <h3>
+            DevOps is not about infra, nor does it mean that developers do all the work.
+        </h3>
+
+        <p>
+            The following definition is in my own words. Not from the book or ChatGPT. It's a bit different from the one
+            you would find in literature, but I hope it being more specific will help people in IT relate to it better:
+        </p>
+
+        <p>
+            "In the context of IT, DevOps encompasses a set of principles that all people involved in the process of
+            turning ideas into working software are applying in order to optimize for fast and reliable long-term
+            delivery. In practice, those range from technical, such as automation (pipelines, tests, etc.) and
+            observability (metrics, logging, alerting) all the way to behavioral (company culture, team dynamics).
+            However, they do not extend to the creative aspects of product design, which are by nature far more
+            unpredictable. We're also not discussing other business aspects, though keep in mind DevOps principles
+            have been applied successfully in other industries as well."
+        </p>
+
+        <p class="quotedtext">
+            <i>As a rule of thumb, think of it this way: once a code change is submitted, DevOps principles shape what
+                happens next, including well after the change is running in production.</i>
+        </p>
+
+        <p>
+            Like for many people, in the past DevOps meant infra to me. When I was working at my first company, which
+            was a startup, I would often say I do plenty of DevOps work since I managed the application by ssh-ing into
+            our servers and using a docker compose (wow, right?). Then, at my next workplace, we didn't have testers or
+            QA but rather a full service ownership model, including infrastructure (to an extent, see <sup id="ref-1"><a
+                    href="#fn-1">[1]</a></sup>) and tests.
+            This approach was working, which made me switch sides regarding the meaning of DevOps. Now I mistakenly
+            thought it was all about developer teams taking on a lot of responsibility by handling related concerns like
+            tests or infrastructure too. I was bought into the idea that if you had individuals with a full range of
+            skills in a team and a clear scope, you could rule the world.
+        </p>
+
+        <p>
+            That couldn't be further from the truth. DevOps is about making it such that people from different teams
+            with different individual objectives can work together in harmony to deliver the shared business objectives.
+            In fact, focusing <i>too much</i> on individual teams could actually turn harmful, as we'll see at the end
+            of the article.
+        </p>
+
+        <p>
+            Here's a simplified example of such collaboration:
+        </p>
+
+        <ul>
+            <li>
+                <p>
+                    The infra team provides developers with simple primitives that they use to deploy infrastructure by
+                    just
+                    committing a file in source control. They also ensure new infrastructure follows common company
+                    standards, which in turn helps with goals like good default configuration, compliance and
+                    observability.
+                </p>
+            </li>
+            <li>
+                <p>
+                    The platform team implements a CI/CD pipeline that can deploy changes automatically to production,
+                    or fail early if any step (building, testing) goes wrong. They also work on common libraries such as
+                    metrics and logging that developers can use to achieve comprehensive observability of the entire
+                    system.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Feature development teams write changes in small batches and commit them multiple times a day. Each
+                    batch comes with adequate tests such that future changes do not impact existing functionality.
+                    Metrics are added and alerts are set up to capture incorrect behavior.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Testers are also part of development teams and build automated end-to-end tests that run
+                    periodically targeting production environments and alert the on-callers in case of failure. They
+                    would also manually test certain flows that are hard to automate.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Teams use tools like pair-programming and Kanban boards for knowledge sharing and visualizing
+                    priorities. They also have a fair on-call culture (they may even use the infra primitives in order
+                    to set up the schedule) allowing them to handle incoming alerts. In case of major incidents,
+                    commanders and responders follow a well-defined set of steps to achieve resolution and learnings are
+                    documented in following post-mortems.
+                </p>
+            </li>
+            <li>
+                <p>
+                    Managers allow their teams to spend some percentage of time (book recommends 20%) on nonfunctional
+                    <sup id="ref-2"><a href="#fn-2">[2]</a></sup> requirements to ensure the system is resilient. This
+                    also helps avoid unplanned work, by
+                    understanding in advance which parts are the most fragile.
+                </p>
+            </li>
+        </ul>
+
+        <p>
+            Of course, I'm aware these guidelines may not fit every organization. I mainly have a web developer's
+            perspective and I haven't even covered all aspects of web development. Also, like every set of guidelines,
+            there will be instances of breaking them. Part of growing as an engineer also means knowing when to assume
+            responsibility and break the rules. The point I'm trying to make with this example is to show the
+            collaborative aspect of DevOps, not suggest how to run your business.
+        </p>
+
+        <p>
+            Let's analyze this in contrast with "The Three Ways" (Flow, Feedback and Culture) and see where each of
+            these practices fits. The Three Ways are the foundational principles from which DevOps practices are
+            derived. Because their definition is quite abstract, I tried to write a short sentence explaining what each
+            means at the beginning of the following paragraphs. I hope the association with practical examples will show
+            a clearer picture anyway. If curios, you can read the more common formulation of these ideas <a
+                href="https://itrevolution.com/articles/the-three-ways-principles-underpinning-devops/">here.</a>
+        </p>
+
+        <p>
+            <b>The first way</b> is all about increasing flow of work from code change to running software. The infra
+            primitives and CI/CD pipelines aim to decrease the lead time <sup id="ref-3"><a href="#fn-3">[3]</a></sup>
+            since the feature was implemented until it reaches customers. More automation means less time work spends in
+            waiting queues: think about having to raise a ticket to request an S3 bucket or a manual test, which only
+            adds to the waiting time. Small batches help with review times (even build times, e.g. in monorepos) and are
+            generally easier to work with when dealing with reverts or searching for bugs. Finally, tools like
+            pair-programming and Kanban make the flow of work visible in the first place.
+        </p>
+
+        <p>
+            <b>The second way</b> is about failing fast and acting fast. Alerts are making issues such as broken builds
+            in the pipeline or failing end-to-end tests visible to developers, which are trained to respond
+            appropriately (more about this in the third way). I think probably the best example of this principle is
+            Toyota's andon cord ("abandon cord" dad joke will help you remember it) which is essentially a switch
+            workers aren't only recommended, but obligated to press in order to stop the entire assembly line if they
+            spot a defect. Failing pipelines that block deployments act as our andon cord. For other issues, the on-call
+            engineers respond quickly to alerts and focus exclusively on mitigation.
+        </p>
+
+        <p>
+            Finally, the <b>third way</b> is about culture. Organizations should foster a culture that allows for
+            continuous learning, experimentation and building habits through repetition. Following a well-defined set of
+            steps in incidents creates repetition, which leads to mastery. Post-mortems keep increasing the accumulated
+            knowledge about the system, which is then shared through ever-improving runbooks. Furthermore, understanding
+            that nonfunctional requirements and maintenance are crucial for a resilient software (here I'm talking about
+            the 20% rule) is also part of a healthy culture. For example, realizing that the database won't scale only
+            when it regularly reaches 80% CPU utilization will be very disrupting, since most engineering effort would
+            have to be redirected towards that problem.
+        </p>
+
+        <p>
+            But perhaps the most important component of a healthy culture is trust. Going back to our examples, a
+            blameless post mortem where people aren't afraid to confess what they did wrong is much more productive in
+            analysing root causes than finger pointing and fear to speak. And (although I feel like I shouldn't have to
+            say this) implementing something like a 20% rule is only effective when that time is actually used for that
+            purpose.
+        </p>
+
+        <p>
+            At the same place with the full-service ownership model, I was for a while in a very high-performing team.
+            When I asked them how they manage to be so efficient, the answer I got was far shorter than expected: "It
+            all comes down to trust."
+        </p>
+
+        <p>
+            This also applies to team interactions, not just individual interactions. Remember that I previously
+            mentioned about focusing too much on individual teams being harmful. All teams share the same business
+            objective, so it's important that team leaders optimize work for the shared objective and not the individual
+            team's objective. I think this is best illustrated with an example, which I haven't witnessed first hand but
+            I've seen similar ones in the materials I read and from peer's stories. It's a bit stretched nowadays but
+            still good for educational purposes.
+        </p>
+
+        <p>
+            Suppose you're having a development team whose work needs to be manually tested by a testing team. It may be
+            tempting to assume that the goal of the development team is to ship features as fast as possible, since that
+            would enable fast growth. It may also be reasonable to assume that the goal of the testing team would be to
+            have everything tested, since that would increase our confidence that the software works as expected. On
+            their own, they both sound reasonable, but in the context of our team's dynamic, they are competing
+            interests. More features shipped would also mean a larger backlog for the testers and in turn, increased
+            likelihood for issues and for changes to be returned back to developers. This is worsened even more if the
+            company uses what in literature are called "proxy metrics" to evaluate team performance (e.g. number of pull
+            requests opened, number of tests performed) since each team will try to optimize for their metrics. At
+            worst, it can lead to conflict and division between the teams: "It's <i>their</i> fault for us not meeting
+            the deadline!"
+        </p>
+
+        <p>
+            Unfortunately, this last part I did witness. I may write a story at some point about how I got caught up in
+            the middle of such conflict.
+        </p>
+
+        <p>
+            For both teams, time would probably be much better spent if they identified their interaction as a
+            constraint and join forces to find improvements. In practice, that could look like working towards a
+            solution which automates a good deal of the tests into a pipeline, reserving manual ones only for select
+            cases. It may be harder at the beginning as developers focused on individual features may not understand how
+            they fit in the context of a complete user flow, or manual testers may not be familiar with automation
+            frameworks, but will certainly pay off in the long run. And notice that depending on interpretation, proxy
+            metrics <i>can</i> be useful (e.g. "We sent back 20 changes last week because we found issues — how can we
+            improve that?")
+        </p>
+
+
+        <p class="quotedtext">
+            <i>
+                I like how the First Way captures the importance of constraints, such as the example above. Think of a
+                program that runs 30 seconds out of which 29 seconds are IO and 1 second is processing. You could
+                optimize the processing, but only have one second to gain. Researching better encoding strategies is a
+                much better candidate for significant improvement.
+            </i>
+        </p>
+
+        <p>
+            With that, I'm hoping this article was a good introduction to DevOps and why infra is only an implementation
+            detail that results by following its principles. And remember, those are just examples and it's important to
+            adapt. A “perfect” solution doesn't exist. Sometimes, you may believe the source of a problem is obvious,
+            but not everyone will agree. In my example with the two teams, the organization may not be ready to invest
+            in automation. If you want to learn more about how companies used DevOps successfully and its principles, I
+            warmly recommend “The DevOps Handbook” and “The Phoenix Project”.
+        </p>
+
+        <p>
+            Or just vibe code bro. AI ain't need no DevOps.
+        </p>
+
+        <hr>
+
+        <ol>
+            <li id="fn-1">
+                <p>
+                    That sentence is missing the whole picture, like I was back then. We were often writing Kubernetes
+                    manifests, sometimes even Terraform, and provisioning our own infra like S3 buckets and databases,
+                    but we did have an infra team. In fact, the infra team was maintaining most of the infra, including
+                    the cluster — we were just given some libraries that we could import as yaml and configure, which
+                    would automagically turn into infra. Sure, our team was responsible for the system design, like
+                    deciding if we need a kafka topic, or how to scale and organize our deployments, but we rarely
+                    touched low-level infra. In fact, I never had to deal with things like multi-cloud application
+                    replication, roles management, VPC networking, DNS, CDN, proxies etc.
+                </p>
+                <p>To this day, from all companies I worked at, that one came closest to textbook DevOps practices.
+                    <a href="#ref-1">↩</a>
+                </p>
+            </li>
+            <li id="fn-2">
+                <p>
+                    Nonfunctional requirements is work that is not typically considered part of the core features
+                    offered by the business but rather implicit, such as application performance and availability,
+                    security, observability and so on. <a href="#ref-2">↩</a>
+                </p>
+            </li>
+            <li id="fn-3">
+                <p>
+                    In IT we refer to "lead time" as shorthand for "deployment lead time", which is the time it takes
+                    since the change was submitted to be running in production and thus provide value to customers. This
+                    is different from manufacturing, where "lead time" means time since raw materials reach the plant
+                    until the finish goods leave the plant. Sometimes, it's useful to contrast development lead time
+                    with implementation time, which includes time spent coding, as well as complete feature time, which
+                    starts with ticket submission, but variation can be much higher in those segments. DevOps principles
+                    tend to fit areas where repeatable patterns emerge. <a href="#ref-3">↩</a>
+                </p>
+            </li>
+        </ol>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>

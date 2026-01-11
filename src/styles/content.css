@@ -64,3 +64,20 @@
     font-size: 40px;
     margin-right: 10px;
 }
+
+/* modern styling for quoted text, similar to medium */
+.content .quotedtext {
+    padding-left: 15px;
+    border-left: 3px solid #ccc;
+}
+
+/* line break before references at the end */
+.content hr {
+    margin-top: 30px;
+    color: #ccc;
+}
+
+/* do not leave more space between lines when using subscript */
+.content sup {
+    line-height: 0px;
+}
