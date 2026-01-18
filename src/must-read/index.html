@@ -67,7 +67,8 @@
             </li>
             <li>
                 <p>
-                    <a href="https://medium.com/@carloarg02/about">Carlos Arguelles</a> has a lot of articles, mostly
+                    <a href="https://medium.com/@carloarg02/about" target="_blank" rel="noopener noreferrer">Carlos
+                        Arguelles</a> has a lot of articles, mostly
                     focusing on comparing culture between Google and Amazon (and Microsoft to a small extent). But if
                     you
                     read their articles, do keep in mind that he's very biased towards Amazon. I still find them
@@ -87,6 +88,61 @@
         <ul>
             <li>
                 <p>
+                    Go's <a href="https://golangweekly.com/issues/585" target="_blank"
+                        rel="noopener noreferrer">newsletter</a> from 16th of January has a lot of
+                    good artices. Lots about concurrency models. Particularly, I'd have a go at:
+                </p>
+                <ul>
+                    <li>
+                        <p>
+                            <a href="https://madflojo.dev/posts/are-atomic-operations-faster-than-a-mutex/"
+                                target="_blank" rel="noopener noreferrer">Atomic vs
+                                mutex</a> operations (even though the diagrams are kind of stupid). It's a good
+                            introduction to both and to operations optimized at the assembly level like
+                            <code>compare-and-swap</code>. Have a look at Go's <a href="https://pkg.go.dev/sync/atomic"
+                                target="_blank" rel="noopener noreferrer">atomic</a>
+                            package for more details.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <a href="https://rybicki.io/blog/2026/01/01/mutexes-from-scratch-in-go.html" target="_blank"
+                                rel="noopener noreferrer">Mutexes from scratch</a> is a great in-depth low-level
+                            article about how mutexes are implemented and why it's often a combination between runtime
+                            checks and OS-level system calls to use OS-level locks. It also introduced <a
+                                href="https://en.wikipedia.org/wiki/Futex" target="_blank"
+                                rel="noopener noreferrer">FUTEX</a> as a
+                            concept as well as performance monitoring using the <code>time</code> Linux utility. This
+                            article was so good it made me follow the author.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <a href="https://skoredin.pro/blog/golang/goroutine-leak-debugging" target="_blank"
+                                rel="noopener noreferrer">Finding goroutine leaks</a> was a great incident analysis and
+                            example of actions taken during the incident to mitigate it and after the incident to make
+                            the system more resilient. Tests and metrics are truly your friend. The part where I would
+                            have liked the author to Go into more details was how they actually deployed the fixes as
+                            they were talking about not being able to restart production they did make code changes and
+                            deploy them in order to mitigate, which makes me wonder how this could have been done with
+                            no restarts.
+                        </p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>
+                    <a href="https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/" target="_blank"
+                        rel="noopener noreferrer">What color is your function?</a> is an (older) rant from the Dart
+                    author about <code>async/await.</code> To be honest, I feel it's a valid rant. Personally, I always
+                    found it harder to reason about asynchronous programming than to explicitly write the logic in the
+                    style of traditional "threads" (I'm not talking about OS-level threads as most languages have some
+                    lightweight version of "threads" with cheap context-switch). Go is my favourite concurrency model,
+                    which seems to resonate with the author.
+                </p>
+            </li>
+            <li>
+                <p>
                     Most of the stuff from <a href="https://stanford-cs242.github.io/f19/" target="_blank"
                         rel="noopener noreferrer">here</a> for programming language design theory.
                 </p>
@@ -95,10 +151,8 @@
                 <p>
                     <a href="https://willcrichton.net/notes/specificity-programming-languages/" target="_blank"
                         rel="noopener noreferrer">About name resolution</a>. There's a lot that goes into figuring out
-                    which
-                    variable to actually use if you define multiple ones with the same name. And different languages
-                    handle
-                    it differently.
+                    which variable to actually use if you define multiple ones with the same name. And different
+                    languages handle it differently.
                 </p>
             </li>
             <li>
@@ -153,7 +207,8 @@
             </li>
             <li>
                 <p>
-                    Rob Pike's <a href="https://github.com/robpike/filter">implementation of common generic
+                    Rob Pike's <a href="https://github.com/robpike/filter" target="_blank"
+                        rel="noopener noreferrer">implementation of common generic
                         functions</a>
                     like map, reduce and filter. And how he feels about them.
                 </p>
