@@ -190,3 +190,47 @@
     display: none;
   }
 }
+
+@media only screen and (orientation: landscape) and (max-height: 500px),
+only screen and (orientation: landscape) and (hover: none) and (pointer: coarse) {
+  body.home-page .profile-section.is-center {
+    width: calc(100vw - 24px);
+    max-width: 430px;
+    top: 54%;
+  }
+
+  body.home-page .profile-section.is-center .profile-pic {
+    height: 190px;
+    width: 190px;
+    border-width: 8px;
+  }
+
+  body.home-page .profile-section.is-center .profile-data .name {
+    font-size: 28px;
+    margin: 8px 0 4px;
+  }
+
+  body.home-page .profile-section.is-center .profile-data .position,
+  body.home-page .profile-section.is-center .profile-data .location {
+    font-size: 14px;
+  }
+
+  body.home-page .profile-section.is-center .profile-data .links {
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  body.home-page .profile-section.is-center .profile-data .links .card {
+    margin: 6px 4px;
+    padding: 4px 8px;
+  }
+
+  body.home-page .profile-section.is-center .profile-data .links .card i {
+    font-size: 18px;
+  }
+
+  body.home-page .profile-section.is-center .profile-data .links .card .media {
+    margin-left: 6px;
+    font-size: 16px;
+  }
+}
