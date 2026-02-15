@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/profile.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/header.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/content.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/top.css" type="text/css" />
+    <link rel="stylesheet" href="../../styles/code.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/c63592b77e.js" crossorigin="anonymous"></script>
+    <title>acceptable if you don't give a shit</title>
+</head>
+
+<body>
+    <div class="top">
+        <nav-menu current="blog" path="../.."></nav-menu>
+        <business-card path="../.."></business-card>
+    </div>
+    <section class="content">
+
+        <h2>AI slop</h2>
+
+        <p>
+            I have been vibe-coding lately. I've been doing it at work, I've been doing it on personal projects. I've
+            tried various models (composer, codex, opus), various techniques (mcp, ralph-wiggum, parallel agents, ai
+            reviewers). It's a bit hard to accept that change is happening so quickly and a bunch of skills I used to
+            have are no longer a competitive advantage but this is a reality now, not a personal preference. Either you
+            adapt or you get left behind. And truthfully, I'm supper happy I don't need to spend time anymore on the
+            things I don't care about.
+        </p>
+
+        <p>
+            But, there are also things I do care about, where I still have to spend time on. Models are simply not there
+            yet. I'm not trying to come up with an explanation of why (bad prompting? difficult tasks? too large context
+            required?) because I don't need to have one. I think everyone who has worked on something they cared about
+            and has experimented with multiple setups will come to the same conclusion. To me, it's good enough to just
+            say they aren't there yet. I'm not saying they won't be. I'm not saying this isn't the future. But it
+            certainly isn't the present.
+        </p>
+
+        <p>
+            Yesterday, I was writing some tests for a poorly-designed logging library that I was testing out. The
+            library itself isn't large but is filled with poor design decisions. No tests is one of them. I had prompted
+            the AI to write some tests, and it spat about 300 lines of them. Cool, I said, boring work is done.
+        </p>
+
+        <p>
+            But, looking at the setup, all the tests were testing the underlying zap logger. Our library was a wrapper,
+            so why would I want to test an already mature library? I was quite clear that I want to test out our
+            abstraction. AI does indeed produce a lot of code, but sometimes it's sufficient to miss a single line of
+            code and that code ends up being complete garbage. You need to know what to look for.
+        </p>
+
+        <p>
+            Also Claude, if I comment all tests but one so that my standard output is not cluterred with logs, and I
+            tell you to re-write that specific test and nothing else, I believe it's quite clear that I <b>don't</b>
+            want my other tests to be uncommented. I can't possibly understand how "nothing else" isn't specific enough.
+            Sure, I could have done better myself by altering my test command. But that's besides the point.
+        </p>
+
+        <p>
+            What I described above actually happens regulary. I would specifically point to a "read" function and ask
+            for an equivalent of a "write" function and nothing more. Because it's very cheap to change existing code
+            myself once I have it so I don't need to spend additional tokens. If I explicitly tell it to just generate
+            that function and nothing more, why the fuck does it try to assume how I would use it and (incorrectly) try
+            to modify the business logic as well?
+        </p>
+
+        <p>
+            On a side note, I don't really get the "I just prompt, no need to ever touch the code" thing. Prompting is
+            expensive. I spend close to 30$ every day at work on the days I do a bit more coding. But there is no real
+            need to prompt everything. Sometimes it takes 15 seconds to write a fix, so there's no real argument for
+            writing a 30 second prompt and spending 40 cents instead.
+        </p>
+
+        <p>
+            Let me share something from my personal project. Here's some code written by ai: <code class="blockcode">
+const (
+	jwtSecretEnv = "OLXTRACKER_JWT_SECRET"
+	tokenTTL     = 30 * 24 * time.Hour
+)
+    // main function
+
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	jwtSecret := os.Getenv(jwtSecretEnv)
+	if jwtSecret == "" {
+		log.Fatalf("%s must be set", jwtSecretEnv)
+	}
+
+            </code>Acceptable, right? Have a look at the <code>LoadConfig()</code> function and package:
+            <code class="blockcode">
+const (
+    OLXTRACKER_PORT_ENV = "OLXTRACKER_PORT"
+    OLXTRACKER_POSTGRES_USER_ENV = "OLXTRACKER_POSTGRES_USER"
+    OLXTRACKER_POSTGRES_PASSWORD_ENV = "OLXTRACKER_POSTGRES_PASSWORD"
+    OLXTRACKER_POSTGRES_HOST_ENV = "OLXTRACKER_POSTGRES_HOST"
+    OLXTRACKER_POSTGRES_PORT_ENV = "OLXTRACKER_POSTGRES_PORT"
+    OLXTRACKER_POSTGRES_DATABASE_ENV = "OLXTRACKER_POSTGRES_DATABASE"
+    OLXTRACKER_POSTGRES_SCHEMA_ENV = "OLXTRACKER_POSTGRES_SCHEMA"
+)
+
+var (
+    ErrOlxtrackerPortEnvMissing = errors.New(OLXTRACKER_PORT_ENV)
+    ErrOlxtrackerPostgresUserEnvMissing = errors.New(OLXTRACKER_POSTGRES_USER_ENV)
+    ErrOlxtrackerPostgresPasswordEnvMissing = errors.New(OLXTRACKER_POSTGRES_PASSWORD_ENV)
+    ErrOlxtrackerPostgresHostEnvMissing = errors.New(OLXTRACKER_POSTGRES_HOST_ENV)
+    ErrOlxtrackerPostgresPortEnvMissing = errors.New(OLXTRACKER_POSTGRES_PORT_ENV)
+    ErrOlxtrackerPostgresPortEnvInvalid = errors.New(OLXTRACKER_POSTGRES_PORT_ENV)
+    ErrOlxtrackerPostgresDatabaseEnvMissing = errors.New(OLXTRACKER_POSTGRES_DATABASE_ENV)
+    ErrOlxtrackerPostgresSchemaEnvMissing = errors.New(OLXTRACKER_POSTGRES_SCHEMA_ENV)
+)
+
+func LoadConfig() (Config, error) {
+    var config Config
+    var missingVars []error
+    var formatVars []error
+    val_Port, ok := os.LookupEnv(OLXTRACKER_PORT_ENV)
+    if !ok {
+        missingVars = append(missingVars, ErrOlxtrackerPortEnvMissing)
+    } else {
+        config.Port = val_Port
+    }
+    // other code
+    val_Postgres_Port, ok := os.LookupEnv(OLXTRACKER_POSTGRES_PORT_ENV)
+    if !ok {
+        missingVars = append(missingVars, ErrOlxtrackerPostgresPortEnvMissing)
+    } else {
+        parsed, err := strconv.Atoi(val_Postgres_Port)
+        if err != nil {
+            formatVars = append(formatVars, ErrOlxtrackerPostgresPortEnvInvalid)
+        } else {
+            config.Postgres.Port = parsed
+        }
+    }
+    // other code
+    if len(missingVars) > 0 || len(formatVars) > 0 {
+        var verr error
+        if len(missingVars) > 0 {
+            verr = errors.Join(verr, MissingEnvVarsError{vars: missingVars})
+        }
+        if len(formatVars) > 0 {
+            verr = errors.Join(verr, InvalidEnvVarsError{vars: missingVars})
+        }
+        return Config{}, verr
+    }
+
+    return config, nil
+
+    // other code
+}
+
+            </code>It seems to have known about my env vars and how I do them. But I suppose the fact that I use my own
+            pacakage for generating config reader code is something that they haven't been trained on.
+        </p>
+
+        <p>
+            By the way, this goes to reviewers like CodeRabbit and Cursor Bot: for the love of God, if you leave
+            comments on
+            the PR, can you please do so on all places where there is an issue? If I need to fix two (good) comments
+            from AI ever again just to have them comment on something totally different and untouched by my fixes once I
+            push them, I swear I'm bypassing all requirements. And stop giving me security tips for kubernetes manifests
+            that are in a folder called "testdata". How many times do I need to add it to the "learnings"?
+        </p>
+
+        <p>
+            I can go on with so many other examples, but will stop here. My point is, if you don't give a shit, none of
+            this matters. Somehow, things will end up working in what feels like no time. And sometimes, that is good
+            enough. Whatever the meaning of "working" is.
+        </p>
+
+        <p>
+            I'm so tired of hearing people with very little experience in programming (yes, I'm looking at you project
+            managers or startup programmers) that keep bragging about how they do everything with AI now and it's better
+            than if it were written by people. Takes like "I did this (insert whatever application) in only one week of
+            prompting. This is the future." are all over the place. But you can't blame them for being short-sighted
+            because they don't have enough experience in the field. Yes, your toy project that has maximum 5 users and
+            runs locally will work just fine in the 4 scenarios you test. However, difficulty has never been in the big
+            picture, it has been in the details. I really question whether that application has ever been running
+            continuously in a production environment for a longer period of time. I really question they had to deal
+            with an incoming stream of bugs and new features or availability concerns. The most expensive part has never
+            been writing software, it has been maintaining running software. But they probably don't give a shit about
+            their toy app (which is the whole point).
+        </p>
+
+        <p>
+            But, not all is gloomy ahead. We're just at a hype stage. Hype is always based off strong feelings. But
+            behind the hype, I think we can all realise that we're sitting on something valuable. We're still in a trial
+            and error mode where we're figuring out how to turn the knobs right. And this thing is also evolving rapidly
+            so don't get too comfortable yet either.
+        </p>
+
+    </section>
+
+</body>
+
+<script src="../../scripts/script.js"></script>
+<script src="../../scripts/components.js"></script>
+
+</html>
