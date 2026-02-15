@@ -43,7 +43,7 @@
         </p>
 
         <p>
-            Yesterday, I was writing some tests for a poorly-designed logging library that I was testing out. The
+            Yesterday, I was writing some tests for a logging library that I was refactoring. The
             library itself isn't large but is filled with poor design decisions. No tests is one of them. I had prompted
             the AI to write some tests, and it spat about 300 lines of them. Cool, I said, boring work is done.
         </p>
@@ -157,7 +157,8 @@ func LoadConfig() (Config, error) {
     // other code
 }
 
-            </code>It seems to have known about my env vars and how I do them. But I suppose the fact that I use my own
+            </code>It seems to have known about my env vars and how I name them. But I suppose the fact that I use my
+            own
             pacakage for generating config reader code is something that they haven't been trained on.
         </p>
 
@@ -178,11 +179,11 @@ func LoadConfig() (Config, error) {
 
         <p>
             I'm so tired of hearing people with very little experience in programming (yes, I'm looking at you project
-            managers or startup programmers) that keep bragging about how they do everything with AI now and it's better
+            managers or startup CEOs) that keep bragging about how they do everything with AI now and it's better
             than if it were written by people. Takes like "I did this (insert whatever application) in only one week of
             prompting. This is the future." are all over the place. But you can't blame them for being short-sighted
             because they don't have enough experience in the field. Yes, your toy project that has maximum 5 users and
-            runs locally will work just fine in the 4 scenarios you test. However, difficulty has never been in the big
+            runs locally will work just fine in the 4 scenarios you need. However, difficulty has never been in the big
             picture, it has been in the details. I really question whether that application has ever been running
             continuously in a production environment for a longer period of time. I really question they had to deal
             with an incoming stream of bugs and new features or availability concerns. The most expensive part has never
@@ -195,6 +196,10 @@ func LoadConfig() (Config, error) {
             behind the hype, I think we can all realise that we're sitting on something valuable. We're still in a trial
             and error mode where we're figuring out how to turn the knobs right. And this thing is also evolving rapidly
             so don't get too comfortable yet either.
+        </p>
+
+        <p>
+            I know change is difficult. But focus on what matters and don't let the hype get to you.
         </p>
 
     </section>
