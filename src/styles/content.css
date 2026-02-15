@@ -82,7 +82,7 @@
     line-height: 0px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) and (orientation: portrait) {
     .content {
         width: 90vw;
         margin: 12px;
@@ -101,5 +101,30 @@
 
     .content .heading i {
         font-size: 28px;
+    }
+}
+
+@media only screen and (orientation: landscape) and (max-height: 500px),
+only screen and (orientation: landscape) and (hover: none) and (pointer: coarse) {
+    body:not(.home-page) .content {
+        align-self: stretch;
+        width: auto;
+        max-width: none;
+        margin: 8px 12px 12px 56px;
+        padding-left: 0;
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    body:not(.home-page) .content .heading h2 {
+        font-size: 28px;
+    }
+
+    body:not(.home-page) .content .heading h3 {
+        font-size: 24px;
+    }
+
+    body:not(.home-page) .content .heading i {
+        font-size: 40px;
     }
 }
