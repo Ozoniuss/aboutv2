@@ -11,13 +11,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
       - name: Install b2 CLI tool
         run: |
-          pip install b2 --log /dev/null
+          pip install 'b2==5.*' --log /dev/null
 
       - name: Sync all files that have a different size
         run: |
